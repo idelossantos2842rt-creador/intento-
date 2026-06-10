@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Isabel de los Santos | Portafolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Modo claro (por defecto) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #1e1e2a;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        /* Modo oscuro */
+        body.dark {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        body.dark .card {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+
+        body.dark .card-image {
+            background-color: #2d3a4e;
+        }
+
+        body.dark .card-desc {
+            color: #cbd5e1;
+        }
+
+        body.dark .badge {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        body.dark .tagline {
+            background-color: #334155;
+        }
+
+        body.dark .filter-btn {
+            border-color: #475569;
+            color: #cbd5e1;
+        }
+
+        body.dark .filter-btn.active {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+
+        body.dark footer {
+            border-top-color: #334155;
+            color: #94a3b8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Encabezado */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #4f46e5, #1e1e2a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        body.dark .hero h1 {
+            background: linear-gradient(135deg, #818cf8, #e2e8f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: #4a4a5a;
+            margin-top: 0.5rem;
+        }
+
+        body.dark .hero p {
+            color: #cbd5e1;
+        }
+
+        .tagline {
+            display: inline-block;
+            background-color: #e0e0e8;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        /* Botón modo oscuro */
+        .dark-mode-toggle {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .dark-mode-toggle:hover {
+            background: #4338ca;
+        }
+
+        /* Filtros */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #c0c0d0;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+
+        /* Grilla de proyectos */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e2ec;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image {
+            background: #e8e8f0;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .card-content {
+            padding: 1.2rem;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-desc {
+            color: #4a4a5a;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e0e0ff;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .btn-ver {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .btn-ver:hover {
+            background-color: #4338ca;
+        }
+
+        /* Botones sociales */
+        .links-section {
+            text-align: center;
+            margin: 3rem 0 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-wa {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-linkedin {
+            background: #0A66C2;
+            color: white;
+        }
+
+        .btn-ig {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid #e0e0e8;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #7a7a8a;
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 80%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>Isabel de los Santos</h1>
+        <p>Desarrollo web · Páginas que conectan</p>
+        <div class="tagline">Landing Page · Basic Page · Chatbot WhatsApp</div>
+        <button class="dark-mode-toggle" id="darkModeToggle">🌙 Modo oscuro</button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="prototipo">Prototipos</button>
+        <button class="filter-btn" data-filter="web">Webs reales</button>
+    </div>
+
+    <!-- Aquí se cargan las tarjetas -->
+    <div id="projectsGrid" class="grid"></div>
+
+    <!-- Redes y contacto -->
+    <div class="links-section">
+        <h3>📲 Conectemos</h3>
+        <div class="btn-group">
+            <a href="https://wa.me/18499129851?text=Hola%20Isabel,%20vi%20tu%20portafolio%20y%20me%20interesa%20una%20web" class="btn btn-wa" target="_blank">WhatsApp</a>
+            <a href=https://www.linkedin.com/in/isabel-de-los-santos-149928374?utm_source=share_via&utm_content=profile&utm_medium=member_ios" class="btn btn-linkedin" target="_blank">LinkedIn</a>
+            <a href="https://www.instagram.com/tuusuario" class="btn btn-ig" target="_blank">Instagram</a>
+        </div>
+        <p style="margin-top: 1rem;">¿Necesitas una web o chatbot? Escríbeme y conversamos.</p>
+    </div>
+
+    <footer>
+        Isabel de los Santos · Desarrollo web independiente · Santo Domingo, RD
+    </footer>
+</div>
+
+<script>
+    // 🔥 TUS PROYECTOS CON ENLACES REALES 🔥
+    // CAMBIA LAS URLS POR LAS TUYAS
+    const proyectos = [
+        {
+            id: 1,
+            nombre: "Landing · Peluquería",
+            descripcion: "Landing page con diseño moderno, horarios, botón WhatsApp y chatbot básico.",
+            tipo: "prototipo",
+            icono: "✂️",
+            url: "https://bleak-tweak-47983168.figma.site"  
+        },
+        {
+            id: 2,
+            nombre: "Business · Peluqueria",
+            descripcion: "Business Basic page con diseño moderno, horarios, botón WhatsApp y chatbot básico.",
+            tipo: "prototipo",
+            icono: "👗",
+            url: "https://style-shy-11038647.figma.site"       
+        },
+        {
+            id: 3,
+            nombre: "Mini Page · Cliente 1",
+            descripcion: "Basic Page completa para negocio local.",
+            tipo: "web",
+            icono: "🌐",
+            url: "https://lizzangels.onrender.com"                     
+        },
+        {
+            id: 4,
+            nombre: "Lading · Cliente 2",
+            descripcion: "Landing Page profesional. Cliente satisfecho.",
+            tipo: "web",
+            icono: "🚀",
+            url: "https://black-thread-vibe.onrender.com"                     
+           
+        }
+    ];
+
+    // Función para mostrar las tarjetas según el filtro
+    function renderizarProyectos(filtro = "all") {
+        const grid = document.getElementById("projectsGrid");
+        if (!grid) return;
+
+        let filtrados = [];
+        if (filtro === "all") {
+            filtrados = proyectos;
+        } else {
+            filtrados = proyectos.filter(p => p.tipo === filtro);
+        }
+
+        grid.innerHTML = "";
+        filtrados.forEach(proy => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <div class="card-image">
+                    <span>${proy.icono}</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">${proy.nombre}</div>
+                    <div class="card-desc">${proy.descripcion}</div>
+                    <span class="badge">${proy.tipo === "prototipo" ? "📌 Prototipo" : "✅ Web real"}</span>
+                    <br>
+                    <a href="${proy.url}" class="btn-ver" target="_blank" rel="noopener noreferrer">🔗 Ver proyecto</a>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    const btns = document.querySelectorAll(".filter-btn");
+    btns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            btns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const filtro = btn.getAttribute("data-filter");
+            renderizarProyectos(filtro);
+        });
+    });
+
+  
+    const darkToggle = document.getElementById("darkModeToggle");
+    if (darkToggle) {
+        darkToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            const isDark = document.body.classList.contains("dark");
+            darkToggle.textContent = isDark ? "☀️ Modo claro" : "🌙 Modo oscuro";
+        });
+    }
+
+    
+    renderizarProyectos("all");
+</script>
+</body>
+</html>
