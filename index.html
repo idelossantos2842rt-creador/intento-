@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isabel De Los Santos | Frontend Developer</title>
+    <title>Isa De Los Santos | Frontend & Mobile Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -209,7 +209,7 @@
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 32px;
         }
 
@@ -232,26 +232,52 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
 
+        .project-header {
+            margin-bottom: 20px;
+        }
+
         .project-tag {
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--accent-primary);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .project-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 12px;
         }
 
-        .project-desc {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+        /* Case Study Details Grid */
+        .case-study-details {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
             margin-bottom: 24px;
-            flex-grow: 1;
+        }
+
+        .detail-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-left: 3px solid var(--accent-primary);
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .detail-item strong {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-primary);
+            margin-bottom: 2px;
+        }
+
+        .detail-item p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
         }
 
         .tech-stack {
@@ -373,6 +399,9 @@
             .hero {
                 padding-top: 130px;
             }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
             .contact-box {
                 padding: 32px 20px;
             }
@@ -384,7 +413,7 @@
     <!-- Header Navigation -->
     <nav>
         <div class="container nav-container">
-            <a href="#" class="logo">&lt;Isabel.dev /&gt;</a>
+            <a href="#" class="logo">&lt;Isa.dev /&gt;</a>
             <ul class="nav-links">
                 <li><a href="#proyectos">Proyectos</a></li>
                 <li><a href="#habilidades">Habilidades</a></li>
@@ -398,10 +427,10 @@
         <div class="badge">
             <span class="badge-dot"></span> Disponible para nuevos proyectos y vacantes
         </div>
-        <h1>Isabel De Los Santos</h1>
-        <h2>Desarrolladora Web Junior / Frontend Developer</h2>
+        <h1>Isa De Los Santos</h1>
+        <h2>Desarrolladora Web & Mobile / Frontend Developer</h2>
         <p class="hero-description">
-            Apasionada por crear experiencias digitales atractivas, modernas e intuitivas. Especializada en la construcción de sitios web responsivos, funcionales y orientados al usuario.
+            Apasionada por crear experiencias digitales atractivas, modernas e intuitivas. Especializada en la construcción de sitios web responsivos, aplicaciones web y móviles funcionales orientadas al usuario.
         </p>
         <div class="cta-buttons">
             <a href="#proyectos" class="btn btn-primary">
@@ -416,22 +445,42 @@
     <!-- Projects Section -->
     <section id="proyectos" class="container projects">
         <div class="section-header">
-            <p class="section-subtitle">Portafolio</p>
+            <p class="section-subtitle">Case Studies</p>
             <h3 class="section-title">Trabajos Recientes</h3>
         </div>
 
         <div class="projects-grid">
-            <!-- Proyecto 1 -->
+            <!-- Proyecto 1: Orthacha -->
             <div class="project-card">
                 <div>
-                    <div class="project-tag">Diseño & Desarrollo Web</div>
-                    <h4 class="project-title">Portafolio Orthacha.N</h4>
-                    <p class="project-desc">
-                        Sitio web profesional diseñado exclusivamente para la modelo Orthacha.N. Presenta una interfaz elegante, responsive y minimalista enfocada en destacar su imagen, experiencia y estilo de manera atractiva.
-                    </p>
+                    <div class="project-header">
+                        <div class="project-tag">Diseño & Desarrollo Web</div>
+                        <h4 class="project-title">Portafolio Orthacha.N</h4>
+                    </div>
+                    
+                    <div class="case-study-details">
+                        <div class="detail-item">
+                            <strong>El Problema</strong>
+                            <p>Falta de un espacio digital centralizado y elegante para proyectar una imagen profesional ante agencias e industrias de moda.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Decisión de Arquitectura</strong>
+                            <p>Uso de componentes ágiles y maquetación semántica para garantizar carga instantánea y máxima compatibilidad visual en móviles.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Enfoque Crítico</strong>
+                            <p>Diseño minimalista interactivo donde la tipografía y el espacio en blanco priorizan la retención visual de la fotografía de modelo.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Resultados</strong>
+                            <p>Experiencia de usuario sin distracciones, optimizada al 100% para la navegación rápida desde smartphones.</p>
+                        </div>
+                    </div>
+
                     <div class="tech-stack">
                         <span class="tech-item">HTML5</span>
                         <span class="tech-item">CSS3</span>
+                        <span class="tech-item">JavaScript</span>
                         <span class="tech-item">Responsive Design</span>
                     </div>
                 </div>
@@ -440,19 +489,38 @@
                 </a>
             </div>
 
-            <!-- Proyecto 2 -->
+            <!-- Proyecto 2: Metabolic Glow -->
             <div class="project-card">
                 <div>
-                    <div class="project-tag">E-Commerce & Notificaciones</div>
-                    <h4 class="project-title">Metabolic Glow</h4>
-                    <p class="project-desc">
-                        Tienda online especializada en suplementos nutricionales. Cuenta con catálogo de productos y un sistema integrado de notificaciones por correo para confirmar transacciones tanto al cliente como al negocio.
-                    </p>
+                    <div class="project-header">
+                        <div class="project-tag">E-Commerce & Notificaciones</div>
+                        <h4 class="project-title">Metabolic Glow</h4>
+                    </div>
+
+                    <div class="case-study-details">
+                        <div class="detail-item">
+                            <strong>El Problema</strong>
+                            <p>Las tiendas convencionales carecen de confirmación inmediata tras la compra, lo que genera desconfianza en clientes de suplementación.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Decisión de Arquitectura</strong>
+                            <p>Integración de un backend robusto en Java acoplado a un frontend interactivo con JavaScript/React para el manejo diferido de eventos.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Enfoque Crítico</strong>
+                            <p>Priorización del flujo de checkout y el envío automatizado de notificaciones vía correo para asegurar la fidelización.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Resultados</strong>
+                            <p>Flujo completo de compra funcional con confirmación en tiempo real tanto para el consumidor como para la administración.</p>
+                        </div>
+                    </div>
+
                     <div class="tech-stack">
-                        <span class="tech-item">HTML5</span>
-                        <span class="tech-item">CSS3</span>
+                        <span class="tech-item">React</span>
                         <span class="tech-item">JavaScript</span>
-                        <span class="tech-item">Java / Backend</span>
+                        <span class="tech-item">Java</span>
+                        <span class="tech-item">REST APIs</span>
                     </div>
                 </div>
                 <a href="https://metabolic-glow-premium-supplementes.onrender.com/" target="_blank" class="project-link">
@@ -460,14 +528,33 @@
                 </a>
             </div>
 
-            <!-- Proyecto 3 -->
+            <!-- Proyecto 3: Lizz Angels -->
             <div class="project-card">
                 <div>
-                    <div class="project-tag">Landing Page & UI Design</div>
-                    <h4 class="project-title">Lizz Angels Beauty Salon</h4>
-                    <p class="project-desc">
-                        Landing page moderna diseñada para un centro de belleza. Presenta una interfaz atractiva, catálogo de servicios, estética sofisticada y diseño totalmente adaptable para dispositivos móviles.
-                    </p>
+                    <div class="project-header">
+                        <div class="project-tag">Landing Page & UI Design</div>
+                        <h4 class="project-title">Lizz Angels Beauty Salon</h4>
+                    </div>
+
+                    <div class="case-study-details">
+                        <div class="detail-item">
+                            <strong>El Problema</strong>
+                            <p>Dificultad para mostrar la gama completa de servicios y agilizar la captación de reservas desde plataformas sociales.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Decisión de Arquitectura</strong>
+                            <p>Prototipado rápido en Figma trasladado a componentes modulares optimizando el orden de visualización en dispositivos táctiles.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Enfoque Crítico</strong>
+                            <p>Estructura visual enfocada en llamadas a la acción (CTA) directas y presentación clara de catálogos estética premium.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Resultados</strong>
+                            <p>Mejora en el tiempo de navegación del usuario y conversión directa hacia el contacto del negocio.</p>
+                        </div>
+                    </div>
+
                     <div class="tech-stack">
                         <span class="tech-item">HTML5</span>
                         <span class="tech-item">CSS3</span>
@@ -480,14 +567,33 @@
                 </a>
             </div>
 
-            <!-- Proyecto 4 -->
+            <!-- Proyecto 4: Black Thread Vibe -->
             <div class="project-card">
                 <div>
-                    <div class="project-tag">Landing Page & Branding</div>
-                    <h4 class="project-title">Black Thread Vibe</h4>
-                    <p class="project-desc">
-                        Landing page moderna enfocada en estética urbana e identidad visual para marca de moda. Estructura responsiva optimizada para una navegación fluida e interactiva.
-                    </p>
+                    <div class="project-header">
+                        <div class="project-tag">Landing Page & Branding</div>
+                        <h4 class="project-title">Black Thread Vibe</h4>
+                    </div>
+
+                    <div class="case-study-details">
+                        <div class="detail-item">
+                            <strong>El Problema</strong>
+                            <p>Necesidad de consolidar una identidad urbana distintiva que conecte de forma rápida con una audiencia joven.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Decisión de Arquitectura</strong>
+                            <p>Despliegue automatizado con integración continua usando GitHub y Render para acelerar iteraciones visuales.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Enfoque Crítico</strong>
+                            <p>Optimización del peso de los assets y aplicación de tendencias de diseño dark-mode orientadas a marca urbana.</p>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Resultados</strong>
+                            <p>Landing page ágil con un tiempo de carga mínimo y una narrativa de marca fuerte e inmersiva.</p>
+                        </div>
+                    </div>
+
                     <div class="tech-stack">
                         <span class="tech-item">HTML5</span>
                         <span class="tech-item">CSS3</span>
@@ -504,18 +610,14 @@
     <!-- Skills Section -->
     <section id="habilidades" class="container skills">
         <div class="section-header">
-            <p class="section-subtitle">Tecnologías</p>
+            <p class="section-subtitle">Tecnologías & Lenguajes</p>
             <h3 class="section-title">Habilidades Técnicas</h3>
         </div>
 
         <div class="skills-grid">
             <div class="skill-card">
-                <i class="fa-brands fa-html5 skill-icon"></i>
-                <div class="skill-name">HTML5</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-css3-alt skill-icon"></i>
-                <div class="skill-name">CSS3</div>
+                <i class="fa-brands fa-react skill-icon"></i>
+                <div class="skill-name">React / Expo</div>
             </div>
             <div class="skill-card">
                 <i class="fa-brands fa-js skill-icon"></i>
@@ -526,8 +628,28 @@
                 <div class="skill-name">Python</div>
             </div>
             <div class="skill-card">
+                <i class="fa-brands fa-node-js skill-icon"></i>
+                <div class="skill-name">Node.js</div>
+            </div>
+            <div class="skill-card">
+                <i class="fa-brands fa-java skill-icon"></i>
+                <div class="skill-name">Java</div>
+            </div>
+            <div class="skill-card">
+                <i class="fa-solid fa-code skill-icon"></i>
+                <div class="skill-name">C++</div>
+            </div>
+            <div class="skill-card">
+                <i class="fa-brands fa-html5 skill-icon"></i>
+                <div class="skill-name">HTML5 / CSS3</div>
+            </div>
+            <div class="skill-card">
+                <i class="fa-solid fa-database skill-icon"></i>
+                <div class="skill-name">SQL / MySQL</div>
+            </div>
+            <div class="skill-card">
                 <i class="fa-brands fa-git-alt skill-icon"></i>
-                <div class="skill-name">Git</div>
+                <div class="skill-name">Git & GitHub</div>
             </div>
             <div class="skill-card">
                 <i class="fa-solid fa-mobile-screen-button skill-icon"></i>
@@ -558,7 +680,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 Isabel De Los Santos. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Isa De Los Santos. Todos los derechos reservados.</p>
         </div>
     </footer>
 
