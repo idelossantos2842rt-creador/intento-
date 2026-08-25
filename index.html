@@ -16,7 +16,7 @@
 
   <style>
     /* ============================================================
-       ESTILOS DEL PORTAFOLIO (original, con nombres actualizados)
+       ESTILOS DEL PORTAFOLIO
        ============================================================ */
     :root {
       --bg-color: #0f172a;
@@ -474,7 +474,7 @@
     }
 
     /* ============================================================
-       ESTILOS DE LA ANIMACIÓN (aislados en .anim-wrapper)
+       ESTILOS DE LA ANIMACIÓN
        ============================================================ */
     .anim-wrapper {
       position: fixed;
@@ -486,7 +486,7 @@
       background-color: #050505;
       transition: opacity 0.6s ease, visibility 0.6s ease;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      cursor: pointer; /* indicador de que es clickeable */
+      cursor: pointer;
     }
 
     .anim-wrapper.hidden {
@@ -564,10 +564,12 @@
       transform: scale(1.05);
     }
 
-    /* Botón "Entrar al Portafolio" (opcional, se mantiene) */
+    /* ============================================================
+       BOTÓN TIPO TÚNEL (PORTAL)
+       ============================================================ */
     .anim-wrapper .enter-btn-container {
       position: absolute;
-      bottom: 15%;
+      bottom: 12%;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -575,48 +577,100 @@
     }
 
     .anim-wrapper .enter-btn {
-      background: var(--anim-button-bg);
-      color: var(--anim-button-text);
-      border: none;
-      padding: 16px 48px;
-      border-radius: 50px;
-      font-size: 1.4rem;
-      font-weight: 700;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff3333, #990000 40%, #330000 70%, #000000 100%);
+      border: 3px solid #ff0000;
+      box-shadow: 0 0 60px rgba(255, 0, 0, 0.6), inset 0 0 40px rgba(255, 0, 0, 0.3);
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-shadow: 0 0 20px #000000;
       cursor: pointer;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       letter-spacing: 1px;
+      padding: 0;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    /* Anillos giratorios alrededor del botón */
+    .anim-wrapper .enter-btn::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      right: -12px;
+      bottom: -12px;
+      border-radius: 50%;
+      border: 2px dashed rgba(255, 0, 0, 0.7);
+      animation: spin 12s linear infinite;
+    }
+
+    .anim-wrapper .enter-btn::after {
+      content: '';
+      position: absolute;
+      top: -24px;
+      left: -24px;
+      right: -24px;
+      bottom: -24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 50, 50, 0.4);
+      animation: spin 18s linear infinite reverse;
+    }
+
+    /* Anillo adicional interno (solo visual) */
+    .anim-wrapper .enter-btn .ring-inner {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 100, 100, 0.3);
+      pointer-events: none;
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .anim-wrapper .enter-btn:hover {
-      transform: scale(1.06);
-      box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
+      transform: scale(1.08);
+      box-shadow: 0 0 90px rgba(255, 0, 0, 0.9), inset 0 0 60px rgba(255, 0, 0, 0.6);
     }
 
     /* Texto indicativo "Haz clic en el ojo" */
     .anim-wrapper .click-hint {
       position: absolute;
-      bottom: 28%;
+      bottom: 32%;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
       color: var(--anim-text);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 500;
       text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
       background: rgba(0, 0, 0, 0.4);
-      padding: 10px 24px;
+      padding: 8px 20px;
       border-radius: 40px;
       backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      pointer-events: none; /* para que no interfiera con clics en el canvas */
+      pointer-events: none;
       white-space: nowrap;
     }
 
     @media (max-width: 600px) {
       .anim-wrapper .enter-btn {
-        padding: 14px 28px;
-        font-size: 1.1rem;
+        width: 140px;
+        height: 140px;
+        font-size: 1rem;
       }
       .anim-wrapper .controls-panel {
         top: 12px;
@@ -625,15 +679,27 @@
         font-size: 0.9rem;
       }
       .anim-wrapper .click-hint {
-        font-size: 0.95rem;
-        padding: 6px 16px;
-        bottom: 30%;
+        font-size: 0.85rem;
+        padding: 6px 14px;
+        bottom: 34%;
         white-space: normal;
+      }
+      .anim-wrapper .enter-btn::before {
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+      }
+      .anim-wrapper .enter-btn::after {
+        top: -16px;
+        left: -16px;
+        right: -16px;
+        bottom: -16px;
       }
     }
 
     /* ============================================================
-       CONTENEDOR DEL PORTAFOLIO (visible tras clic)
+       CONTENEDOR DEL PORTAFOLIO
        ============================================================ */
     #portfolio-content {
       display: none;
@@ -652,7 +718,7 @@
 <body>
 
   <!-- ============================================================
-  ANIMACIÓN DE BIENVENIDA (OJO + TÚNEL)
+  ANIMACIÓN DE BIENVENIDA
   ============================================================ -->
   <div id="animation-wrapper" class="anim-wrapper">
     <div id="canvas-container">
@@ -666,16 +732,19 @@
     </div>
 
     <!-- Texto indicativo -->
-    <div class="click-hint">👁️ Haz clic en el ojo para entrar al portafolio</div>
+    <div class="click-hint">👁️ Haz clic en el ojo o en el portal</div>
 
-    <!-- Botón (opcional, se mantiene) -->
+    <!-- Botón tipo Túnel / Portal -->
     <div class="enter-btn-container">
-      <button class="enter-btn" id="enter-portfolio-btn">Entrar al Portafolio</button>
+      <button class="enter-btn" id="enter-portfolio-btn">
+        <span class="ring-inner"></span>
+        Entrar
+      </button>
     </div>
   </div>
 
   <!-- ============================================================
-  CONTENIDO DEL PORTAFOLIO (oculto inicialmente)
+  PORTAFOLIO
   ============================================================ -->
   <div id="portfolio-content">
     <!-- NAV -->
@@ -712,7 +781,7 @@
       </div>
     </section>
 
-    <!-- RESULTADOS Y MÉTRICAS -->
+    <!-- RESULTADOS -->
     <section id="resultados" class="container metrics-section">
       <div class="section-header">
         <p class="section-subtitle">Cuenta de Resultados &amp; Métricas Medibles</p>
@@ -738,7 +807,6 @@
         </div>
       </div>
 
-      <!-- Gráficas -->
       <div class="charts-grid">
         <div class="chart-card">
           <h4>Optimización de Rendimiento (Antes vs. Después)</h4>
@@ -751,7 +819,7 @@
       </div>
     </section>
 
-    <!-- PENSAMIENTOS / METODOLOGÍA -->
+    <!-- PENSAMIENTOS -->
     <section id="pensamiento" class="container thoughts-section">
       <div class="section-header">
         <p class="section-subtitle">Muestra de Pensamientos</p>
@@ -785,7 +853,6 @@
       </div>
 
       <div class="projects-grid">
-        <!-- Proyecto 1 -->
         <div class="project-card">
           <div>
             <div class="project-tag">Frontend &amp; Portfolio</div>
@@ -812,7 +879,6 @@
           </a>
         </div>
 
-        <!-- Proyecto 2 -->
         <div class="project-card">
           <div>
             <div class="project-tag">E-Commerce &amp; Backend</div>
@@ -839,7 +905,6 @@
           </a>
         </div>
 
-        <!-- Proyecto 3 -->
         <div class="project-card">
           <div>
             <div class="project-tag">UI/UX &amp; Landing Page</div>
@@ -866,7 +931,6 @@
           </a>
         </div>
 
-        <!-- Proyecto 4 -->
         <div class="project-card">
           <div>
             <div class="project-tag">Branding &amp; CI/CD</div>
@@ -968,15 +1032,13 @@
       </div>
     </footer>
   </div>
-  <!-- FIN #portfolio-content -->
-
 
   <!-- ============================================================
   SCRIPTS
   ============================================================ -->
   <script>
     // ------------------------------------------------------------
-    // 1. LÓGICA DE LA ANIMACIÓN (OJO + TÚNEL)
+    // 1. ANIMACIÓN (OJO + TÚNEL)
     // ------------------------------------------------------------
     (function() {
       const wrapper = document.getElementById('animation-wrapper');
@@ -996,9 +1058,8 @@
       window.addEventListener('resize', resize);
       resize();
 
-      // Cambiar tema (solo en la animación)
       themeBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evita que el clic en el botón también dispare la entrada
+        e.stopPropagation();
         if (theme === 'dark') {
           theme = 'light';
           wrapper.setAttribute('data-theme', 'light');
@@ -1024,7 +1085,6 @@
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Contorno exterior
         ctx.beginPath();
         ctx.moveTo(-50, 0);
         ctx.quadraticCurveTo(0, -35, 50, 0);
@@ -1032,17 +1092,14 @@
         ctx.closePath();
         ctx.stroke();
 
-        // Iris
         ctx.beginPath();
         ctx.arc(0, 0, 20, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Pupila
         ctx.beginPath();
         ctx.arc(0, 0, 8, 0, Math.PI * 2);
         ctx.fill();
 
-        // Detalles internos
         for (let i = 0; i < 3; i++) {
           const angle = (frame * 0.03) + (i * (Math.PI * 2 / 3));
           const px = Math.cos(angle) * 13;
@@ -1060,7 +1117,6 @@
         ctx.fillStyle = bgColor;
         ctx.fillRect(0, 0, width, height);
 
-        // Túnel
         const tunnelProgress = (frame % tunnelDuration) / tunnelDuration;
         const ringCount = 12;
         for (let i = 0; i < ringCount; i++) {
@@ -1078,7 +1134,6 @@
           ctx.restore();
         }
 
-        // Ojo
         const eyeScale = 1 + Math.sin(frame * 0.04) * 0.1;
         drawEye(centerX, centerY, eyeScale);
 
@@ -1091,7 +1146,7 @@
 
 
     // ------------------------------------------------------------
-    // 2. MOSTRAR / OCULTAR AL HACER CLIC (en el ojo o en el botón)
+    // 2. FUNCIÓN PARA ENTRAR AL PORTAFOLIO
     // ------------------------------------------------------------
     const enterBtn = document.getElementById('enter-portfolio-btn');
     const animWrapper = document.getElementById('animation-wrapper');
@@ -1165,21 +1220,13 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Asignar evento al botón
+    // Eventos
     enterBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       entrarAlPortafolio();
     });
 
-    // Asignar evento al canvas (clic en el ojo o en cualquier parte de la animación)
     canvasElem.addEventListener('click', entrarAlPortafolio);
-    // También el wrapper por si el clic se da en el fondo (pero el canvas cubre todo)
-    animWrapper.addEventListener('click', (e) => {
-      // Evitar que se dispare dos veces si el clic fue en el canvas (ya lo manejamos)
-      // Pero como el canvas está encima, el evento del wrapper no se disparará si el clic es en el canvas.
-      // Sin embargo, si el clic es en el borde (por ejemplo, en el panel de controles), no queremos que entre.
-      // Dejamos solo el canvas.
-    });
   </script>
 
 </body>
