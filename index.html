@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animación Interactiva</title>
-  <style>
-    /* Variables para Modo Oscuro (Predeterminado) y Claro */
-    :root {
-      --bg-color: #050505;
-      --text-color: #ffffff;
-      --panel-bg: rgba(20, 20, 20, 0.75);
-      --panel-border: rgba(255, 0, 0, 0.3);
-      --button-bg: #e60000;
-      --button-text: #ffffff;
-      --tunnel-color: rgba(255, 0, 0, 0.25);
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Isabel De los Santos | Full Stack & Mobile Developer</title>
 
-    [data-theme="light"] {
-      --bg-color: #f4f4f9;
-      --text-color: #1a1a1a;
-      --panel-bg: rgba(255, 255, 255, 0.85);
-      --panel-border: rgba(200, 0, 0, 0.4);
-      --button-bg: #cc0000;
-      --button-text: #ffffff;
-      --tunnel-color: rgba(200, 0, 0, 0.35);
+  <!-- Fuentes e iconos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* ============================================================
+       ESTILOS DEL PORTAFOLIO (original, con nombres actualizados)
+       ============================================================ */
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --gradient-1: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     * {
@@ -34,177 +38,1115 @@
 
     body {
       background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      transition: background-color 0.4s ease, color 0.4s ease;
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    #canvas-container {
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-primary);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 150px 0 80px 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--accent-primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin-bottom: 30px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--gradient-1);
+      color: #0f172a;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    /* SECCIONES */
+    .section-header {
+      margin-bottom: 40px;
+    }
+
+    .section-subtitle {
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    /* Métricas */
+    .metrics-section {
+      padding: 60px 0;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Charts */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 28px;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .chart-card h4 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    /* Pensamientos */
+    .thoughts-section {
+      padding: 60px 0;
+    }
+
+    .thoughts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .thought-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 28px;
+      position: relative;
+    }
+
+    .thought-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: rgba(56, 189, 248, 0.2);
       position: absolute;
+      top: 20px;
+      right: 24px;
+    }
+
+    .thought-card h4 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: var(--accent-primary);
+    }
+
+    .thought-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Proyectos */
+    .projects {
+      padding: 60px 0;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 28px;
+    }
+
+    .project-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .project-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      margin-bottom: 6px;
+    }
+
+    .project-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .case-study-details {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .problem-box {
+      background: rgba(239, 68, 68, 0.08);
+      border-left: 3px solid #ef4444;
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .problem-box strong {
+      color: #f87171;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .solution-box {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 3px solid var(--accent-primary);
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .solution-box strong {
+      color: var(--accent-primary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .case-study-details p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tech-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-primary);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    /* Skills */
+    .skills {
+      padding: 60px 0;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .skill-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: var(--accent-primary);
+    }
+
+    .skill-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Contacto */
+    .contact {
+      padding: 80px 0;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 24px 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .projects-grid,
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================================
+       ESTILOS DE LA ANIMACIÓN (aislados en .anim-wrapper)
+       ============================================================ */
+    .anim-wrapper {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      z-index: 9999;
+      background-color: #050505; /* fallback */
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .anim-wrapper.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Variables propias de la animación */
+    .anim-wrapper {
+      --anim-bg: #050505;
+      --anim-text: #ffffff;
+      --anim-panel-bg: rgba(20, 20, 20, 0.75);
+      --anim-panel-border: rgba(255, 0, 0, 0.3);
+      --anim-button-bg: #e60000;
+      --anim-button-text: #ffffff;
+      --anim-tunnel-color: rgba(255, 0, 0, 0.25);
+    }
+
+    .anim-wrapper[data-theme="light"] {
+      --anim-bg: #f4f4f9;
+      --anim-text: #1a1a1a;
+      --anim-panel-bg: rgba(255, 255, 255, 0.85);
+      --anim-panel-border: rgba(200, 0, 0, 0.4);
+      --anim-button-bg: #cc0000;
+      --anim-button-text: #ffffff;
+      --anim-tunnel-color: rgba(200, 0, 0, 0.35);
+    }
+
+    .anim-wrapper #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
     }
 
-    /* UI y Controles */
-    .controls-panel {
+    .anim-wrapper #animCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Panel de controles (tema) */
+    .anim-wrapper .controls-panel {
       position: absolute;
       top: 20px;
       right: 20px;
       z-index: 10;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
+      background: var(--anim-panel-bg);
+      border: 1px solid var(--anim-panel-border);
       backdrop-filter: blur(10px);
-      padding: 15px 20px;
+      padding: 12px 18px;
       border-radius: 12px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       display: flex;
       gap: 12px;
       align-items: center;
+      color: var(--anim-text);
     }
 
-    .theme-btn {
-      background: var(--button-bg);
-      color: var(--button-text);
+    .anim-wrapper .theme-btn {
+      background: var(--anim-button-bg);
+      color: var(--anim-button-text);
       border: none;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
       transition: transform 0.2s ease, background-color 0.3s ease;
     }
 
-    .theme-btn:hover {
+    .anim-wrapper .theme-btn:hover {
       transform: scale(1.05);
+    }
+
+    /* Botón "Entrar al Portafolio" */
+    .anim-wrapper .enter-btn-container {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+    }
+
+    .anim-wrapper .enter-btn {
+      background: var(--anim-button-bg);
+      color: var(--anim-button-text);
+      border: none;
+      padding: 16px 48px;
+      border-radius: 50px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .anim-wrapper .enter-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
+    }
+
+    /* Ajustes responsivos para el botón */
+    @media (max-width: 600px) {
+      .anim-wrapper .enter-btn {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+      }
+      .anim-wrapper .controls-panel {
+        top: 12px;
+        right: 12px;
+        padding: 8px 14px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* ============================================================
+       CONTENEDOR DEL PORTAFOLIO (visible tras clic)
+       ============================================================ */
+    #portfolio-content {
+      display: none;
+      /* se muestra con JS */
+      position: relative;
+      z-index: 1;
+      background: var(--bg-color);
+      min-height: 100vh;
+    }
+
+    #portfolio-content.visible {
+      display: block;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="controls-panel">
-    <span>Tema:</span>
-    <button class="theme-btn" id="theme-toggle">Modo Claro</button>
+  <!-- ============================================================
+  ANIMACIÓN DE BIENVENIDA (OJO + TÚNEL)
+  ============================================================ -->
+  <div id="animation-wrapper" class="anim-wrapper">
+    <div id="canvas-container">
+      <canvas id="animCanvas"></canvas>
+    </div>
+
+    <!-- Controles de tema -->
+    <div class="controls-panel">
+      <span>Tema:</span>
+      <button class="theme-btn" id="theme-toggle">Modo Claro</button>
+    </div>
+
+    <!-- Botón para entrar al portafolio -->
+    <div class="enter-btn-container">
+      <button class="enter-btn" id="enter-portfolio-btn">Entrar al Portafolio</button>
+    </div>
   </div>
 
-  <div id="canvas-container">
-    <canvas id="animCanvas"></canvas>
-  </div>
+  <!-- ============================================================
+  CONTENIDO DEL PORTAFOLIO (oculto inicialmente)
+  ============================================================ -->
+  <div id="portfolio-content">
+    <!-- NAV -->
+    <nav>
+      <div class="container nav-container">
+        <a href="#" class="logo">&lt;Isabel.dev /&gt;</a>
+        <ul class="nav-links">
+          <li><a href="#resultados">Resultados</a></li>
+          <li><a href="#pensamiento">Metodología</a></li>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#habilidades">Stack</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
 
+    <!-- HERO -->
+    <section class="container hero">
+      <div class="badge">
+        <span class="badge-dot"></span> Disponible para nuevos proyectos
+      </div>
+      <h1>Isabel De los Santos</h1>
+      <h2>Full Stack & Mobile Developer</h2>
+      <p class="hero-description">
+        Especializada en resolver problemas de arquitectura digital, optimizar el rendimiento de interfaces web y construir aplicaciones móviles escalables con React, Expo, Python y JavaScript.
+      </p>
+      <div class="cta-buttons">
+        <a href="#proyectos" class="btn btn-primary">
+          Ver Proyectos <i class="fa-solid fa-arrow-down"></i>
+        </a>
+        <a href="https://wa.me/18499129851" target="_blank" class="btn btn-secondary">
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- RESULTADOS Y MÉTRICAS -->
+    <section id="resultados" class="container metrics-section">
+      <div class="section-header">
+        <p class="section-subtitle">Cuenta de Resultados &amp; Métricas Medibles</p>
+        <h3 class="section-title">Impacto Técnico Cuantificable</h3>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">+5</div>
+          <div class="metric-label">Proyectos Desplegados</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Cumplimiento de Entregas</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">-60%</div>
+          <div class="metric-label">Tiempo de Respuesta API</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">99.9%</div>
+          <div class="metric-label">Uptime en Servicios</div>
+        </div>
+      </div>
+
+      <!-- Gráficas -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h4>Optimización de Rendimiento (Antes vs. Después)</h4>
+          <canvas id="performanceChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Distribución del Stack de Lenguajes</h4>
+          <canvas id="stackChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENSAMIENTOS / METODOLOGÍA -->
+    <section id="pensamiento" class="container thoughts-section">
+      <div class="section-header">
+        <p class="section-subtitle">Muestra de Pensamientos</p>
+        <h3 class="section-title">Enfoque y Filosofía de Desarrollo</h3>
+      </div>
+
+      <div class="thoughts-grid">
+        <div class="thought-card">
+          <span class="thought-number">01</span>
+          <h4>Diagnóstico y Análisis Crítico</h4>
+          <p>Antes de escribir código, identifico el cuello de botella del negocio. Priorizo la arquitectura semántica y la velocidad de carga sobre soluciones complejas innecesarias.</p>
+        </div>
+        <div class="thought-card">
+          <span class="thought-number">02</span>
+          <h4>Componentización Modular</h4>
+          <p>Diseño código limpio, extensible y reutilizable usando React y Expo. Esto asegura mantenibilidad a largo plazo y despliegues sin interrupciones en Render y Vercel.</p>
+        </div>
+        <div class="thought-card">
+          <span class="thought-number">03</span>
+          <h4>Orientado al Usuario &amp; Datos</h4>
+          <p>Mido el éxito a través de resultados concretos: menor latencia, mayor conversión y adaptabilidad móvil en cualquier tipo de dispositivo táctil.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="proyectos" class="container projects">
+      <div class="section-header">
+        <p class="section-subtitle">Estudios de Caso</p>
+        <h3 class="section-title">Solución de Problemas Reales</h3>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Proyecto 1 -->
+        <div class="project-card">
+          <div>
+            <div class="project-tag">Frontend &amp; Portfolio</div>
+            <h4 class="project-title">Portafolio Orthacha.N</h4>
+            <div class="case-study-details">
+              <div class="problem-box">
+                <strong>Problema Claro:</strong>
+                <p>Falta de una plataforma profesional que retuviera la atención visual de agencias sin saturar con tiempos de carga pesados por imágenes de alta resolución.</p>
+              </div>
+              <div class="solution-box">
+                <strong>Solución Técnica:</strong>
+                <p>Implementación de maquetado minimalista, optimización de assets con carga diferida y diseño 100% responsivo.</p>
+              </div>
+            </div>
+            <div class="tech-stack">
+              <span class="tech-item">HTML5</span>
+              <span class="tech-item">CSS3</span>
+              <span class="tech-item">JavaScript</span>
+              <span class="tech-item">Render</span>
+            </div>
+          </div>
+          <a href="https://orthachan.onrender.com" target="_blank" class="project-link">
+            Ver proyecto <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <!-- Proyecto 2 -->
+        <div class="project-card">
+          <div>
+            <div class="project-tag">E-Commerce &amp; Backend</div>
+            <h4 class="project-title">Metabolic Glow</h4>
+            <div class="case-study-details">
+              <div class="problem-box">
+                <strong>Problema Claro:</strong>
+                <p>Abandono de carritos por falta de confirmación inmediata y procesos de checkout complejos en la compra de suplementos.</p>
+              </div>
+              <div class="solution-box">
+                <strong>Solución Técnica:</strong>
+                <p>Arquitectura desacoplada en Java y React con eventos asíncronos para confirmación vía correo en tiempo real.</p>
+              </div>
+            </div>
+            <div class="tech-stack">
+              <span class="tech-item">React</span>
+              <span class="tech-item">JavaScript</span>
+              <span class="tech-item">Java</span>
+              <span class="tech-item">REST APIs</span>
+            </div>
+          </div>
+          <a href="https://metabolic-glow-premium-supplementes.onrender.com/" target="_blank" class="project-link">
+            Ver e-commerce <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <!-- Proyecto 3 -->
+        <div class="project-card">
+          <div>
+            <div class="project-tag">UI/UX &amp; Landing Page</div>
+            <h4 class="project-title">Lizz Angels Beauty Salon</h4>
+            <div class="case-study-details">
+              <div class="problem-box">
+                <strong>Problema Claro:</strong>
+                <p>Baja conversión en la reserva de citas desde redes sociales debido a información dispersa y llamadas a la acción confusas.</p>
+              </div>
+              <div class="solution-box">
+                <strong>Solución Técnica:</strong>
+                <p>Diseño de interfaz directa en Figma traducido a código optimizado para agendar citas rápidamente vía WhatsApp.</p>
+              </div>
+            </div>
+            <div class="tech-stack">
+              <span class="tech-item">HTML5</span>
+              <span class="tech-item">CSS3</span>
+              <span class="tech-item">Figma</span>
+              <span class="tech-item">JavaScript</span>
+            </div>
+          </div>
+          <a href="https://lizzangels.onrender.com" target="_blank" class="project-link">
+            Ver landing page <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <!-- Proyecto 4 -->
+        <div class="project-card">
+          <div>
+            <div class="project-tag">Branding &amp; CI/CD</div>
+            <h4 class="project-title">Black Thread Vibe</h4>
+            <div class="case-study-details">
+              <div class="problem-box">
+                <strong>Problema Claro:</strong>
+                <p>Necesidad de consolidar una presencia web urbana rápidamente con despliegue automatizado e iterativo.</p>
+              </div>
+              <div class="solution-box">
+                <strong>Solución Técnica:</strong>
+                <p>Flujo CI/CD con GitHub y Render, logrando actualizaciones automáticas y estética dark-mode fluida.</p>
+              </div>
+            </div>
+            <div class="tech-stack">
+              <span class="tech-item">HTML5</span>
+              <span class="tech-item">CSS3</span>
+              <span class="tech-item">GitHub</span>
+              <span class="tech-item">Render</span>
+            </div>
+          </div>
+          <a href="https://blackthreadvibe.onrender.com/" target="_blank" class="project-link">
+            Ver marca <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="habilidades" class="container skills">
+      <div class="section-header">
+        <p class="section-subtitle">Tecnologías Principales</p>
+        <h3 class="section-title">Habilidades Técnicas</h3>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <i class="fa-brands fa-react skill-icon"></i>
+          <div class="skill-name">React / Expo</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-js skill-icon"></i>
+          <div class="skill-name">JavaScript</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-python skill-icon"></i>
+          <div class="skill-name">Python</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-node-js skill-icon"></i>
+          <div class="skill-name">Node.js</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-java skill-icon"></i>
+          <div class="skill-name">Java</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-solid fa-code skill-icon"></i>
+          <div class="skill-name">C++</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-html5 skill-icon"></i>
+          <div class="skill-name">HTML5 / CSS3</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-solid fa-database skill-icon"></i>
+          <div class="skill-name">SQL / MySQL</div>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-git-alt skill-icon"></i>
+          <div class="skill-name">Git &amp; GitHub</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="container contact">
+      <div class="contact-box">
+        <h2>¿Trabajemos en tu próximo proyecto?</h2>
+        <p>Disponible para vacantes de desarrollo Full Stack, Frontend y Mobile.</p>
+        <div class="contact-links">
+          <a href="mailto:idelossantos2842rt@gmail.com" class="btn btn-primary">
+            <i class="fa-solid fa-envelope"></i> Correo
+          </a>
+          <a href="https://wa.me/18499129851" target="_blank" class="btn btn-secondary">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+          </a>
+          <a href="https://www.linkedin.com/in/isabel-de-los-santos-149928374" target="_blank" class="btn btn-secondary">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Isabel De los Santos. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  </div>
+  <!-- FIN #portfolio-content -->
+
+
+  <!-- ============================================================
+  SCRIPTS
+  ============================================================ -->
   <script>
-    const canvas = document.getElementById('animCanvas');
-    const ctx = canvas.getContext('2d');
-    const themeBtn = document.getElementById('theme-toggle');
+    // ------------------------------------------------------------
+    // 1. LÓGICA DE LA ANIMACIÓN (OJO + TÚNEL)
+    // ------------------------------------------------------------
+    (function() {
+      const wrapper = document.getElementById('animation-wrapper');
+      const canvas = document.getElementById('animCanvas');
+      const ctx = canvas.getContext('2d');
+      const themeBtn = document.getElementById('theme-toggle');
 
-    let width, height, centerX, centerY;
-    let theme = 'dark';
+      let width, height, centerX, centerY;
+      let theme = 'dark';
 
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      centerX = width / 2;
-      centerY = height / 2;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // Alternar Tema Claro / Oscuro
-    themeBtn.addEventListener('click', () => {
-      if (theme === 'dark') {
-        theme = 'light';
-        document.body.setAttribute('data-theme', 'light');
-        themeBtn.innerText = 'Modo Oscuro';
-      } else {
-        theme = 'dark';
-        document.body.removeAttribute('data-theme');
-        themeBtn.innerText = 'Modo Claro';
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        centerX = width / 2;
+        centerY = height / 2;
       }
-    });
+      window.addEventListener('resize', resize);
+      resize();
 
-    // Parámetros de Animación
-    let frame = 0;
-    const tunnelDuration = 300; // Se extendió la duración del túnel (frames)
+      // Cambiar tema (solo en la animación)
+      themeBtn.addEventListener('click', () => {
+        if (theme === 'dark') {
+          theme = 'light';
+          wrapper.setAttribute('data-theme', 'light');
+          themeBtn.innerText = 'Modo Oscuro';
+        } else {
+          theme = 'dark';
+          wrapper.removeAttribute('data-theme');
+          themeBtn.innerText = 'Modo Claro';
+        }
+      });
 
-    function drawEye(x, y, scale) {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.scale(scale * 2, scale * 2); // Ojo al duplo de su tamaño original
+      let frame = 0;
+      const tunnelDuration = 300;
 
-      // Estilo del ojo: Rojo e intensidad de líneas aumentada
-      ctx.strokeStyle = '#ff0000';
-      ctx.fillStyle = '#ff0000';
-      ctx.lineWidth = 4.5; // Líneas mucho más gruesas
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-
-      // Contorno exterior del ojo
-      ctx.beginPath();
-      ctx.moveTo(-50, 0);
-      ctx.quadraticCurveTo(0, -35, 50, 0);
-      ctx.quadraticCurveTo(0, 35, -50, 0);
-      ctx.closePath();
-      ctx.stroke();
-
-      // Iris exterior
-      ctx.beginPath();
-      ctx.arc(0, 0, 20, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Pupila central
-      ctx.beginPath();
-      ctx.arc(0, 0, 8, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Detalle de tomorae / líneas internas del ojo
-      for (let i = 0; i < 3; i++) {
-        const angle = (frame * 0.03) + (i * (Math.PI * 2 / 3));
-        const px = Math.cos(angle) * 13;
-        const py = Math.sin(angle) * 13;
-        ctx.beginPath();
-        ctx.arc(px, py, 3.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.restore();
-    }
-
-    function animate() {
-      // Limpiar lienzo según el tema actual
-      ctx.fillStyle = theme === 'dark' ? '#050505' : '#f4f4f9';
-      ctx.fillRect(0, 0, width, height);
-
-      // Dibujar Túnel (Duración extendida)
-      const tunnelProgress = (frame % tunnelDuration) / tunnelDuration;
-      const ringCount = 12;
-
-      for (let i = 0; i < ringCount; i++) {
-        const ringProgress = (tunnelProgress + (i / ringCount)) % 1;
-        const radius = Math.pow(ringProgress, 2) * (Math.max(width, height) * 0.8);
-        const alpha = Math.sin(ringProgress * Math.PI);
-
+      function drawEye(x, y, scale) {
         ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale * 2, scale * 2);
+
+        ctx.strokeStyle = '#ff0000';
+        ctx.fillStyle = '#ff0000';
+        ctx.lineWidth = 4.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Contorno exterior
         ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = theme === 'dark' 
-          ? `rgba(255, 0, 0, ${alpha * 0.4})` 
-          : `rgba(200, 0, 0, ${alpha * 0.5})`;
-        ctx.lineWidth = 3 + (ringProgress * 4);
+        ctx.moveTo(-50, 0);
+        ctx.quadraticCurveTo(0, -35, 50, 0);
+        ctx.quadraticCurveTo(0, 35, -50, 0);
+        ctx.closePath();
         ctx.stroke();
+
+        // Iris
+        ctx.beginPath();
+        ctx.arc(0, 0, 20, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Pupila
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Detalles internos
+        for (let i = 0; i < 3; i++) {
+          const angle = (frame * 0.03) + (i * (Math.PI * 2 / 3));
+          const px = Math.cos(angle) * 13;
+          const py = Math.sin(angle) * 13;
+          ctx.beginPath();
+          ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
         ctx.restore();
       }
 
-      // Dibujar Ojo central animado
-      const eyeScale = 1 + Math.sin(frame * 0.04) * 0.1;
-      drawEye(centerX, centerY, eyeScale);
+      function animate() {
+        // Fondo
+        const bgColor = theme === 'dark' ? '#050505' : '#f4f4f9';
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, width, height);
 
-      frame++;
-      requestAnimationFrame(animate);
+        // Túnel
+        const tunnelProgress = (frame % tunnelDuration) / tunnelDuration;
+        const ringCount = 12;
+        for (let i = 0; i < ringCount; i++) {
+          const ringProgress = (tunnelProgress + (i / ringCount)) % 1;
+          const radius = Math.pow(ringProgress, 2) * (Math.max(width, height) * 0.8);
+          const alpha = Math.sin(ringProgress * Math.PI);
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+          ctx.strokeStyle = theme === 'dark' ?
+            `rgba(255, 0, 0, ${alpha * 0.4})` :
+            `rgba(200, 0, 0, ${alpha * 0.5})`;
+          ctx.lineWidth = 3 + (ringProgress * 4);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Ojo
+        const eyeScale = 1 + Math.sin(frame * 0.04) * 0.1;
+        drawEye(centerX, centerY, eyeScale);
+
+        frame++;
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    })();
+
+
+    // ------------------------------------------------------------
+    // 2. MOSTRAR / OCULTAR AL HACER CLIC EN "ENTRAR"
+    // ------------------------------------------------------------
+    const enterBtn = document.getElementById('enter-portfolio-btn');
+    const animWrapper = document.getElementById('animation-wrapper');
+    const portfolioContent = document.getElementById('portfolio-content');
+
+    // Función para inicializar las gráficas de Chart.js
+    let chartsInitialized = false;
+
+    function initCharts() {
+      if (chartsInitialized) return;
+      chartsInitialized = true;
+
+      // Gráfica 1: Rendimiento
+      const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+      new Chart(ctxPerf, {
+        type: 'bar',
+        data: {
+          labels: ['Tiempo Carga (s)', 'Tasa Conversión (%)', 'Puntaje Lighthouse'],
+          datasets: [{
+            label: 'Antes de Optimizar',
+            data: [4.2, 12, 65],
+            backgroundColor: 'rgba(239, 68, 68, 0.5)',
+            borderColor: '#ef4444',
+            borderWidth: 1
+          }, {
+            label: 'Después de Optimizar',
+            data: [1.1, 38, 98],
+            backgroundColor: 'rgba(56, 189, 248, 0.7)',
+            borderColor: '#38bdf8',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#94a3b8' } }
+          },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+
+      // Gráfica 2: Stack
+      const ctxStack = document.getElementById('stackChart').getContext('2d');
+      new Chart(ctxStack, {
+        type: 'doughnut',
+        data: {
+          labels: ['React / Expo', 'JavaScript', 'Python', 'HTML / CSS', 'Java / C++', 'SQL / Node.js'],
+          datasets: [{
+            data: [25, 20, 15, 15, 15, 10],
+            backgroundColor: ['#38bdf8', '#818cf8', '#34d399', '#f59e0b', '#ec4899', '#a78bfa'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+          }
+        }
+      });
     }
 
-    animate();
+    enterBtn.addEventListener('click', function() {
+      // Ocultar la animación
+      animWrapper.classList.add('hidden');
+
+      // Mostrar el portafolio
+      portfolioContent.style.display = 'block';
+      // Pequeño retraso para asegurar que el display block se aplique antes de las gráficas
+      setTimeout(() => {
+        portfolioContent.classList.add('visible');
+        // Inicializar gráficas si no lo están
+        initCharts();
+      }, 100);
+
+      // Desplazar al inicio (por si acaso)
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   </script>
+
 </body>
 </html>
 
