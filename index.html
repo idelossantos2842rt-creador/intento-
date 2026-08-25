@@ -9,18 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chart.js CDN para las gráficas -->
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --card-border: #1f2937;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --accent-primary: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.15);
+            --accent-purple: #818cf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
             --gradient-1: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
             --font-main: 'Inter', system-ui, -apple-system, sans-serif;
         }
@@ -37,6 +38,166 @@
             font-family: var(--font-main);
             line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ----------------------------------------------------
+           1. INTRO INTERACTIVA CON OJO Y TÚNEL 3D (FULL CSS)
+        ---------------------------------------------------- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            overflow: hidden;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .tunnel-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            perspective: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tunnel-ring {
+            position: absolute;
+            border: 2px solid rgba(56, 189, 248, 0.25);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            opacity: 0;
+            transform: translateZ(-1000px);
+        }
+
+        /* Ojo Cyberpunk / Futurista */
+        .eye-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .eye-container {
+            position: relative;
+            width: 150px;
+            height: 85px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 3px solid var(--accent-primary);
+            border-radius: 100px 0;
+            transform: rotate(45deg);
+            box-shadow: 0 0 35px var(--accent-glow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .eye-container:hover {
+            transform: rotate(45deg) scale(1.15);
+            box-shadow: 0 0 60px rgba(56, 189, 248, 0.8);
+            border-color: #ffffff;
+        }
+
+        .pupil {
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, #38bdf8 0%, #818cf8 60%, #0f172a 100%);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px var(--accent-primary);
+            transform: rotate(-45deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.15s ease-out;
+        }
+
+        .pupil-inner {
+            width: 18px;
+            height: 18px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #ffffff;
+        }
+
+        .intro-hint {
+            margin-top: 45px;
+            color: var(--accent-primary);
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-6px); }
+        }
+
+        /* Animaciones del Clic */
+        #intro-overlay.zooming .tunnel-ring {
+            animation: warpSpeed 1.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+
+        #intro-overlay.zooming .tunnel-ring:nth-child(1) { animation-delay: 0.0s; }
+        #intro-overlay.zooming .tunnel-ring:nth-child(2) { animation-delay: 0.1s; }
+        #intro-overlay.zooming .tunnel-ring:nth-child(3) { animation-delay: 0.2s; }
+        #intro-overlay.zooming .tunnel-ring:nth-child(4) { animation-delay: 0.3s; }
+        #intro-overlay.zooming .tunnel-ring:nth-child(5) { animation-delay: 0.4s; }
+
+        #intro-overlay.zooming .eye-container {
+            animation: eyeZoom 1s forwards ease-in;
+        }
+
+        @keyframes warpSpeed {
+            0% {
+                opacity: 0;
+                transform: translateZ(-800px) scale(0.1);
+            }
+            50% { opacity: 1; }
+            100% {
+                opacity: 0;
+                transform: translateZ(500px) scale(4);
+                border-color: var(--accent-purple);
+            }
+        }
+
+        @keyframes eyeZoom {
+            0% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(2.5); opacity: 0.8; }
+            100% { transform: rotate(45deg) scale(12); opacity: 0; }
+        }
+
+        /* ----------------------------------------------------
+           2. CONTENIDO COMPLETO DEL PORTAFOLIO (FADE-IN)
+        ---------------------------------------------------- */
+        #main-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
+            pointer-events: none;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         .container {
@@ -51,7 +212,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(11, 15, 25, 0.85);
             backdrop-filter: blur(12px);
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -164,9 +325,7 @@
             box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-        }
+        .btn-primary:hover { transform: translateY(-2px); }
 
         .btn-secondary {
             background: var(--card-bg);
@@ -198,10 +357,8 @@
             font-weight: 700;
         }
 
-        /* Sección Cuenta de Resultados / Métricas */
-        .metrics-section {
-            padding: 60px 0;
-        }
+        /* Sección Métricas y Gráficas */
+        .metrics-section { padding: 60px 0; }
 
         .metrics-grid {
             display: grid;
@@ -233,7 +390,6 @@
             font-weight: 500;
         }
 
-        /* Charts Container */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -250,13 +406,10 @@
         .chart-card h4 {
             font-size: 1.1rem;
             margin-bottom: 16px;
-            color: var(--text-primary);
         }
 
-        /* Muestra de Pensamientos / Metodología */
-        .thoughts-section {
-            padding: 60px 0;
-        }
+        /* Muestra de Pensamientos */
+        .thoughts-section { padding: 60px 0; }
 
         .thoughts-grid {
             display: grid;
@@ -293,10 +446,8 @@
             line-height: 1.5;
         }
 
-        /* Projects Section */
-        .projects {
-            padding: 60px 0;
-        }
+        /* Proyectos y Problemas */
+        .projects { padding: 60px 0; }
 
         .projects-grid {
             display: grid;
@@ -315,9 +466,7 @@
             transition: border-color 0.3s;
         }
 
-        .project-card:hover {
-            border-color: var(--accent-primary);
-        }
+        .project-card:hover { border-color: var(--accent-primary); }
 
         .project-tag {
             font-size: 0.75rem;
@@ -333,7 +482,6 @@
             margin-bottom: 16px;
         }
 
-        /* Problem & Case Study Details */
         .case-study-details {
             display: flex;
             flex-direction: column;
@@ -400,10 +548,8 @@
             font-size: 0.9rem;
         }
 
-        /* Skills Section */
-        .skills {
-            padding: 60px 0;
-        }
+        /* Habilidades */
+        .skills { padding: 60px 0; }
 
         .skills-grid {
             display: grid;
@@ -430,13 +576,11 @@
             font-weight: 600;
         }
 
-        /* Contact Section */
-        .contact {
-            padding: 80px 0;
-        }
+        /* Contacto */
+        .contact { padding: 80px 0; }
 
         .contact-box {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(11, 15, 25, 0.95) 100%);
             border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 40px;
@@ -467,367 +611,425 @@
 </head>
 <body>
 
-    <!-- Nav -->
-    <nav>
-        <div class="container nav-container">
-            <a href="#" class="logo">&lt;Isa.dev /&gt;</a>
-            <ul class="nav-links">
-                <li><a href="#resultados">Resultados</a></li>
-                <li><a href="#pensamiento">Metodología</a></li>
-                <li><a href="#proyectos">Proyectos</a></li>
-                <li><a href="#habilidades">Stack</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero -->
-    <section class="container hero">
-        <div class="badge">
-            <span class="badge-dot"></span> Disponible para nuevos proyectos
-        </div>
-        <h1>Isa De Los Santos</h1>
-        <h2>Full Stack & Mobile Developer</h2>
-        <p class="hero-description">
-            Especializada en resolver problemas de arquitectura digital, optimizar el rendimiento de interfaces web y construir aplicaciones móviles escalables con React, Expo, Python y JavaScript.
-        </p>
-        <div class="cta-buttons">
-            <a href="#proyectos" class="btn btn-primary">
-                Ver Proyectos <i class="fa-solid fa-arrow-down"></i>
-            </a>
-            <a href="https://wa.me/18499129851" target="_blank" class="btn btn-secondary">
-                <i class="fa-brands fa-whatsapp"></i> WhatsApp
-            </a>
-        </div>
-    </section>
-
-    <!-- Cuenta de Resultados y Gráficas -->
-    <section id="resultados" class="container metrics-section">
-        <div class="section-header">
-            <p class="section-subtitle">Cuenta de Resultados & Métricas Medibles</p>
-            <h3 class="section-title">Impacto Técnico Cuantificable</h3>
+    <!-- 1. INTRO INTERACTIVA CON OJO Y TÚNEL 3D -->
+    <div id="intro-overlay">
+        <div class="tunnel-container">
+            <div class="tunnel-ring"></div>
+            <div class="tunnel-ring"></div>
+            <div class="tunnel-ring"></div>
+            <div class="tunnel-ring"></div>
+            <div class="tunnel-ring"></div>
         </div>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-value">+5</div>
-                <div class="metric-label">Proyectos Desplegados</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">100%</div>
-                <div class="metric-label">Cumplimiento de Entregas</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">-60%</div>
-                <div class="metric-label">Tiempo de Respuesta API</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value">99.9%</div>
-                <div class="metric-label">Uptime en Servicios</div>
-            </div>
-        </div>
-
-        <!-- Gráficas Interactivas con Chart.js -->
-        <div class="charts-grid">
-            <div class="chart-card">
-                <h4>Optimización de Rendimiento (Antes vs. Después)</h4>
-                <canvas id="performanceChart"></canvas>
-            </div>
-            <div class="chart-card">
-                <h4>Distribución del Stack de Lenguajes</h4>
-                <canvas id="stackChart"></canvas>
-            </div>
-        </div>
-    </section>
-
-    <!-- Muestra de Pensamientos -->
-    <section id="pensamiento" class="container thoughts-section">
-        <div class="section-header">
-            <p class="section-subtitle">Muestra de Pensamientos</p>
-            <h3 class="section-title">Enfoque y Filosofía de Desarrollo</h3>
-        </div>
-
-        <div class="thoughts-grid">
-            <div class="thought-card">
-                <span class="thought-number">01</span>
-                <h4>Diagnóstico y Análisis Crítico</h4>
-                <p>Antes de escribir código, identifico el cuello de botella del negocio. Priorizo la arquitectura semántica y la velocidad de carga sobre soluciones complejas innecesarias.</p>
-            </div>
-            <div class="thought-card">
-                <span class="thought-number">02</span>
-                <h4>Componentización Modular</h4>
-                <p>Diseño código limpio, extensible y reutilizable usando React y Expo. Esto asegura mantenibilidad a largo plazo y despliegues sin interrupciones en Render y Vercel.</p>
-            </div>
-            <div class="thought-card">
-                <span class="thought-number">03</span>
-                <h4>Orientado al Usuario & Datos</h4>
-                <p>Mido el éxito a través de resultados concretos: menor latencia, mayor conversión y adaptabilidad móvil en cualquier tipo de dispositivo táctil.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section con Problema Claro -->
-    <section id="proyectos" class="container projects">
-        <div class="section-header">
-            <p class="section-subtitle">Estudios de Caso</p>
-            <h3 class="section-title">Solución de Problemas Reales</h3>
-        </div>
-
-        <div class="projects-grid">
-            <!-- Proyecto 1: Orthacha -->
-            <div class="project-card">
-                <div>
-                    <div class="project-tag">Frontend & Portfolio</div>
-                    <h4 class="project-title">Portafolio Orthacha.N</h4>
-                    
-                    <div class="case-study-details">
-                        <div class="problem-box">
-                            <strong>Problema Claro:</strong>
-                            <p>Falta de una plataforma profesional que retuviera la atención visual de agencias sin saturar con tiempos de carga pesados por imágenes de alta resolución.</p>
-                        </div>
-                        <div class="solution-box">
-                            <strong>Solución Técnica:</strong>
-                            <p>Implementación de maquetado minimalista, optimización de assets con carga diferida y diseño 100% responsivo.</p>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack">
-                        <span class="tech-item">HTML5</span>
-                        <span class="tech-item">CSS3</span>
-                        <span class="tech-item">JavaScript</span>
-                        <span class="tech-item">Render</span>
-                    </div>
+        <div class="eye-wrapper" id="interactive-eye">
+            <div class="eye-container">
+                <div class="pupil" id="pupil">
+                    <div class="pupil-inner"></div>
                 </div>
-                <a href="https://orthachan.onrender.com" target="_blank" class="project-link">
-                    Ver proyecto <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
             </div>
-
-            <!-- Proyecto 2: Metabolic Glow -->
-            <div class="project-card">
-                <div>
-                    <div class="project-tag">E-Commerce & Backend</div>
-                    <h4 class="project-title">Metabolic Glow</h4>
-
-                    <div class="case-study-details">
-                        <div class="problem-box">
-                            <strong>Problema Claro:</strong>
-                            <p>Abandono de carritos por falta de confirmación inmediata y procesos de checkout complejos en la compra de suplementos.</p>
-                        </div>
-                        <div class="solution-box">
-                            <strong>Solución Técnica:</strong>
-                            <p>Arquitectura desacoplada en Java y React con eventos asíncronos para confirmación vía correo en tiempo real.</p>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack">
-                        <span class="tech-item">React</span>
-                        <span class="tech-item">JavaScript</span>
-                        <span class="tech-item">Java</span>
-                        <span class="tech-item">REST APIs</span>
-                    </div>
-                </div>
-                <a href="https://metabolic-glow-premium-supplementes.onrender.com/" target="_blank" class="project-link">
-                    Ver e-commerce <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-            </div>
-
-            <!-- Proyecto 3: Lizz Angels -->
-            <div class="project-card">
-                <div>
-                    <div class="project-tag">UI/UX & Landing Page</div>
-                    <h4 class="project-title">Lizz Angels Beauty Salon</h4>
-
-                    <div class="case-study-details">
-                        <div class="problem-box">
-                            <strong>Problema Claro:</strong>
-                            <p>Baja conversión en la reserva de citas desde redes sociales debido a información dispersa y llamadas a la acción confusas.</p>
-                        </div>
-                        <div class="solution-box">
-                            <strong>Solución Técnica:</strong>
-                            <p>Diseño de interfaz directa en Figma traducido a código optimizado para agendar citas rápidamente vía WhatsApp.</p>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack">
-                        <span class="tech-item">HTML5</span>
-                        <span class="tech-item">CSS3</span>
-                        <span class="tech-item">Figma</span>
-                        <span class="tech-item">JavaScript</span>
-                    </div>
-                </div>
-                <a href="https://lizzangels.onrender.com" target="_blank" class="project-link">
-                    Ver landing page <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-            </div>
-
-            <!-- Proyecto 4: Black Thread Vibe -->
-            <div class="project-card">
-                <div>
-                    <div class="project-tag">Branding & CI/CD</div>
-                    <h4 class="project-title">Black Thread Vibe</h4>
-
-                    <div class="case-study-details">
-                        <div class="problem-box">
-                            <strong>Problema Claro:</strong>
-                            <p>Necesidad de consolidar una presencia web urbana rápidamente con despliegue automatizado e iterativo.</p>
-                        </div>
-                        <div class="solution-box">
-                            <strong>Solución Técnica:</strong>
-                            <p>Flujo CI/CD con GitHub y Render, logrando actualizaciones automáticas y estética dark-mode fluida.</p>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack">
-                        <span class="tech-item">HTML5</span>
-                        <span class="tech-item">CSS3</span>
-                        <span class="tech-item">GitHub</span>
-                        <span class="tech-item">Render</span>
-                    </div>
-                </div>
-                <a href="https://blackthreadvibe.onrender.com/" target="_blank" class="project-link">
-                    Ver marca <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-            </div>
+            <p class="intro-hint">Haz clic en el ojo para entrar al portafolio</p>
         </div>
-    </section>
+    </div>
 
-    <!-- Skills Section -->
-    <section id="habilidades" class="container skills">
-        <div class="section-header">
-            <p class="section-subtitle">Tecnologías Principales</p>
-            <h3 class="section-title">Habilidades Técnicas</h3>
-        </div>
+    <!-- 2. CONTENIDO COMPLETO DEL PORTAFOLIO -->
+    <main id="main-content">
+        <!-- Nav -->
+        <nav>
+            <div class="container nav-container">
+                <a href="#" class="logo">&lt;Isa.dev /&gt;</a>
+                <ul class="nav-links">
+                    <li><a href="#resultados">Resultados</a></li>
+                    <li><a href="#pensamiento">Metodología</a></li>
+                    <li><a href="#proyectos">Proyectos</a></li>
+                    <li><a href="#habilidades">Stack</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+        </nav>
 
-        <div class="skills-grid">
-            <div class="skill-card">
-                <i class="fa-brands fa-react skill-icon"></i>
-                <div class="skill-name">React / Expo</div>
+        <!-- Hero -->
+        <section class="container hero">
+            <div class="badge">
+                <span class="badge-dot"></span> Disponible para nuevos proyectos y vacantes
             </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-js skill-icon"></i>
-                <div class="skill-name">JavaScript</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-python skill-icon"></i>
-                <div class="skill-name">Python</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-node-js skill-icon"></i>
-                <div class="skill-name">Node.js</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-java skill-icon"></i>
-                <div class="skill-name">Java</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-solid fa-code skill-icon"></i>
-                <div class="skill-name">C++</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-html5 skill-icon"></i>
-                <div class="skill-name">HTML5 / CSS3</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-solid fa-database skill-icon"></i>
-                <div class="skill-name">SQL / MySQL</div>
-            </div>
-            <div class="skill-card">
-                <i class="fa-brands fa-git-alt skill-icon"></i>
-                <div class="skill-name">Git & GitHub</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contacto" class="container contact">
-        <div class="contact-box">
-            <h2>¿Trabajemos en tu próximo proyecto?</h2>
-            <p>Disponible para vacantes de desarrollo Full Stack, Frontend y Mobile.</p>
-            <div class="contact-links">
-                <a href="mailto:idelossantos2842rt@gmail.com" class="btn btn-primary">
-                    <i class="fa-solid fa-envelope"></i> Correo
+            <h1>Isa De Los Santos</h1>
+            <h2>Full Stack & Mobile Developer</h2>
+            <p class="hero-description">
+                Especializada en resolver problemas de arquitectura digital, optimizar el rendimiento de interfaces web y construir aplicaciones móviles escalables con React, Expo, Python, JavaScript, Java y C++.
+            </p>
+            <div class="cta-buttons">
+                <a href="#proyectos" class="btn btn-primary">
+                    Ver Proyectos <i class="fa-solid fa-arrow-down"></i>
                 </a>
                 <a href="https://wa.me/18499129851" target="_blank" class="btn btn-secondary">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp
                 </a>
-                <a href="https://www.linkedin.com/in/isabel-de-los-santos-149928374" target="_blank" class="btn btn-secondary">
-                    <i class="fa-brands fa-linkedin"></i> LinkedIn
-                </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Isa De Los Santos. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+        <!-- Cuenta de Resultados y Gráficas -->
+        <section id="resultados" class="container metrics-section">
+            <div class="section-header">
+                <p class="section-subtitle">Cuenta de Resultados & Métricas Medibles</p>
+                <h3 class="section-title">Impacto Técnico Cuantificable</h3>
+            </div>
 
-    <!-- Script de Inicialización de Chart.js -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">+5</div>
+                    <div class="metric-label">Proyectos Desplegados</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">Cumplimiento de Entregas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">-60%</div>
+                    <div class="metric-label">Tiempo de Respuesta API</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">99.9%</div>
+                    <div class="metric-label">Uptime en Servicios</div>
+                </div>
+            </div>
+
+            <!-- Gráficas Interactivas -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4>Optimización de Rendimiento (Antes vs. Después)</h4>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Distribución del Stack de Lenguajes</h4>
+                    <canvas id="stackChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Muestra de Pensamientos -->
+        <section id="pensamiento" class="container thoughts-section">
+            <div class="section-header">
+                <p class="section-subtitle">Muestra de Pensamientos</p>
+                <h3 class="section-title">Enfoque y Filosofía de Desarrollo</h3>
+            </div>
+
+            <div class="thoughts-grid">
+                <div class="thought-card">
+                    <span class="thought-number">01</span>
+                    <h4>Diagnóstico y Análisis Crítico</h4>
+                    <p>Antes de escribir código, identifico el cuello de botella del negocio. Priorizo la arquitectura semántica y la velocidad de carga sobre soluciones complejas innecesarias.</p>
+                </div>
+                <div class="thought-card">
+                    <span class="thought-number">02</span>
+                    <h4>Componentización Modular</h4>
+                    <p>Diseño código limpio, extensible y reutilizable usando React y Expo. Esto asegura mantenibilidad a largo plazo y despliegues sin interrupciones en Render y GitHub.</p>
+                </div>
+                <div class="thought-card">
+                    <span class="thought-number">03</span>
+                    <h4>Orientado al Usuario & Datos</h4>
+                    <p>Mido el éxito a través de resultados concretos: menor latencia, mayor conversión y adaptabilidad móvil en cualquier tipo de dispositivo táctil.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section con Problema Claro -->
+        <section id="proyectos" class="container projects">
+            <div class="section-header">
+                <p class="section-subtitle">Estudios de Caso</p>
+                <h3 class="section-title">Solución de Problemas Reales</h3>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Proyecto 1: Orthacha -->
+                <div class="project-card">
+                    <div>
+                        <div class="project-tag">Frontend & Portfolio</div>
+                        <h4 class="project-title">Portafolio Orthacha.N</h4>
+                        
+                        <div class="case-study-details">
+                            <div class="problem-box">
+                                <strong>Problema Claro:</strong>
+                                <p>Falta de una plataforma profesional que retuviera la atención visual de agencias sin saturar con tiempos de carga pesados por imágenes de alta resolución.</p>
+                            </div>
+                            <div class="solution-box">
+                                <strong>Solución Técnica:</strong>
+                                <p>Implementación de maquetado minimalista, optimización de assets con carga diferida y diseño 100% responsivo.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-stack">
+                            <span class="tech-item">HTML5</span>
+                            <span class="tech-item">CSS3</span>
+                            <span class="tech-item">JavaScript</span>
+                            <span class="tech-item">Render</span>
+                        </div>
+                    </div>
+                    <a href="https://orthachan.onrender.com" target="_blank" class="project-link">
+                        Ver proyecto <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Proyecto 2: Metabolic Glow -->
+                <div class="project-card">
+                    <div>
+                        <div class="project-tag">E-Commerce & Backend</div>
+                        <h4 class="project-title">Metabolic Glow</h4>
+
+                        <div class="case-study-details">
+                            <div class="problem-box">
+                                <strong>Problema Claro:</strong>
+                                <p>Abandono de carritos por falta de confirmación inmediata y procesos de checkout complejos en la compra de suplementos.</p>
+                            </div>
+                            <div class="solution-box">
+                                <strong>Solución Técnica:</strong>
+                                <p>Arquitectura desacoplada en Java y React con eventos asíncronos para confirmación vía correo en tiempo real.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-stack">
+                            <span class="tech-item">React</span>
+                            <span class="tech-item">JavaScript</span>
+                            <span class="tech-item">Java</span>
+                            <span class="tech-item">REST APIs</span>
+                        </div>
+                    </div>
+                    <a href="https://metabolic-glow-premium-supplementes.onrender.com/" target="_blank" class="project-link">
+                        Ver e-commerce <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Proyecto 3: Lizz Angels -->
+                <div class="project-card">
+                    <div>
+                        <div class="project-tag">UI/UX & Landing Page</div>
+                        <h4 class="project-title">Lizz Angels Beauty Salon</h4>
+
+                        <div class="case-study-details">
+                            <div class="problem-box">
+                                <strong>Problema Claro:</strong>
+                                <p>Baja conversión en la reserva de citas desde redes sociales debido a información dispersa y llamadas a la acción confusas.</p>
+                            </div>
+                            <div class="solution-box">
+                                <strong>Solución Técnica:</strong>
+                                <p>Diseño de interfaz directa en Figma traducido a código optimizado para agendar citas rápidamente vía WhatsApp.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-stack">
+                            <span class="tech-item">HTML5</span>
+                            <span class="tech-item">CSS3</span>
+                            <span class="tech-item">Figma</span>
+                            <span class="tech-item">JavaScript</span>
+                        </div>
+                    </div>
+                    <a href="https://lizzangels.onrender.com" target="_blank" class="project-link">
+                        Ver landing page <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Proyecto 4: Black Thread Vibe -->
+                <div class="project-card">
+                    <div>
+                        <div class="project-tag">Branding & CI/CD</div>
+                        <h4 class="project-title">Black Thread Vibe</h4>
+
+                        <div class="case-study-details">
+                            <div class="problem-box">
+                                <strong>Problema Claro:</strong>
+                                <p>Necesidad de consolidar una presencia web urbana rápidamente con despliegue automatizado e iterativo.</p>
+                            </div>
+                            <div class="solution-box">
+                                <strong>Solución Técnica:</strong>
+                                <p>Flujo CI/CD con GitHub y Render, logrando actualizaciones automáticas y estética dark-mode fluida.</p>
+                            </div>
+                        </div>
+
+                        <div class="tech-stack">
+                            <span class="tech-item">HTML5</span>
+                            <span class="tech-item">CSS3</span>
+                            <span class="tech-item">GitHub</span>
+                            <span class="tech-item">Render</span>
+                        </div>
+                    </div>
+                    <a href="https://blackthreadvibe.onrender.com/" target="_blank" class="project-link">
+                        Ver marca <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="habilidades" class="container skills">
+            <div class="section-header">
+                <p class="section-subtitle">Tecnologías Principales</p>
+                <h3 class="section-title">Habilidades Técnicas</h3>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <i class="fa-brands fa-react skill-icon"></i>
+                    <div class="skill-name">React / Expo</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-brands fa-js skill-icon"></i>
+                    <div class="skill-name">JavaScript</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-brands fa-python skill-icon"></i>
+                    <div class="skill-name">Python</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-brands fa-node-js skill-icon"></i>
+                    <div class="skill-name">Node.js</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-brands fa-java skill-icon"></i>
+                    <div class="skill-name">Java</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-solid fa-code skill-icon"></i>
+                    <div class="skill-name">C++</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-brands fa-html5 skill-icon"></i>
+                    <div class="skill-name">HTML5 / CSS3</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-solid fa-database skill-icon"></i>
+                    <div class="skill-name">SQL / MySQL</div>
+                </div>
+                <div class="skill-card">
+                    <i class="fa-brands fa-git-alt skill-icon"></i>
+                    <div class="skill-name">Git & GitHub</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="container contact">
+            <div class="contact-box">
+                <h2>¿Trabajemos en tu próximo proyecto?</h2>
+                <p>Disponible para vacantes de desarrollo Full Stack, Frontend y Mobile.</p>
+                <div class="contact-links">
+                    <a href="mailto:idelossantos2842rt@gmail.com" class="btn btn-primary">
+                        <i class="fa-solid fa-envelope"></i> Correo
+                    </a>
+                    <a href="https://wa.me/18499129851" target="_blank" class="btn btn-secondary">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://www.linkedin.com/in/isabel-de-los-santos-149928374" target="_blank" class="btn btn-secondary">
+                        <i class="fa-brands fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <p>&copy; 2026 Isa De Los Santos. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Script de Inicialización -->
     <script>
-        // Gráfica 1: Comparativa de Rendimiento
-        const ctxPerformance = document.getElementById('performanceChart').getContext('2d');
-        new Chart(ctxPerformance, {
-            type: 'bar',
-            data: {
-                labels: ['Tiempo Carga (s)', 'Tasa Conversión (%)', 'Puntaje Lighthouse'],
-                datasets: [
-                    {
-                        label: 'Antes de Optimizar',
-                        data: [4.2, 12, 65],
-                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
-                        borderColor: '#ef4444',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Después de Optimizar',
-                        data: [1.1, 38, 98],
-                        backgroundColor: 'rgba(56, 189, 248, 0.7)',
-                        borderColor: '#38bdf8',
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { labels: { color: '#94a3b8' } }
-                },
-                scales: {
-                    x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                    y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
-                }
-            }
+        // Lógica de la Intro e Interacción
+        const eye = document.getElementById('interactive-eye');
+        const pupil = document.getElementById('pupil');
+        const overlay = document.getElementById('intro-overlay');
+        const content = document.getElementById('main-content');
+
+        // Seguimiento sutil del cursor
+        document.addEventListener('mousemove', (e) => {
+            if (overlay.classList.contains('zooming')) return;
+            
+            const rect = eye.getBoundingClientRect();
+            const eyeX = rect.left + rect.width / 2;
+            const eyeY = rect.top + rect.height / 2;
+            
+            const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
+            const distance = Math.min(14, Math.hypot(e.clientX - eyeX, e.clientY - eyeY) / 15);
+            
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+            
+            pupil.style.transform = `rotate(-45deg) translate(${x}px, ${y}px)`;
         });
 
-        // Gráfica 2: Distribución del Stack Tecnológico
-        const ctxStack = document.getElementById('stackChart').getContext('2d');
-        new Chart(ctxStack, {
-            type: 'doughnut',
-            data: {
-                labels: ['React / Expo', 'JavaScript', 'Python', 'HTML / CSS', 'Java / C++', 'SQL / Node.js'],
-                datasets: [{
-                    data: [25, 20, 15, 15, 15, 10],
-                    backgroundColor: [
-                        '#38bdf8',
-                        '#818cf8',
-                        '#34d399',
-                        '#f59e0b',
-                        '#ec4899',
-                        '#a78bfa'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom', labels: { color: '#94a3b8' } }
-                }
-            }
+        // Clic en el ojo para abrir el túnel
+        eye.addEventListener('click', () => {
+            overlay.classList.add('zooming');
+
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                overlay.style.visibility = 'hidden';
+                content.classList.add('visible');
+
+                // Renderizar gráficas tras la entrada
+                initCharts();
+            }, 1100);
         });
+
+        function initCharts() {
+            // Chart 1
+            const ctxPerformance = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctxPerformance, {
+                type: 'bar',
+                data: {
+                    labels: ['Tiempo Carga (s)', 'Tasa Conversión (%)', 'Puntaje Lighthouse'],
+                    datasets: [
+                        {
+                            label: 'Antes de Optimizar',
+                            data: [4.2, 12, 65],
+                            backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                            borderColor: '#ef4444',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Después de Optimizar',
+                            data: [1.1, 38, 98],
+                            backgroundColor: 'rgba(56, 189, 248, 0.7)',
+                            borderColor: '#38bdf8',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            // Chart 2
+            const ctxStack = document.getElementById('stackChart').getContext('2d');
+            new Chart(ctxStack, {
+                type: 'doughnut',
+                data: {
+                    labels: ['React / Expo', 'JavaScript', 'Python', 'HTML / CSS', 'Java / C++', 'SQL / Node.js'],
+                    datasets: [{
+                        data: [25, 20, 15, 15, 15, 10],
+                        backgroundColor: [
+                            '#38bdf8',
+                            '#818cf8',
+                            '#34d399',
+                            '#f59e0b',
+                            '#ec4899',
+                            '#a78bfa'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } }
+                }
+            });
+        }
     </script>
 </body>
 </html>
