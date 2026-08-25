@@ -483,9 +483,10 @@
       width: 100vw;
       height: 100vh;
       z-index: 9999;
-      background-color: #050505; /* fallback */
+      background-color: #050505;
       transition: opacity 0.6s ease, visibility 0.6s ease;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      cursor: pointer; /* indicador de que es clickeable */
     }
 
     .anim-wrapper.hidden {
@@ -494,7 +495,6 @@
       pointer-events: none;
     }
 
-    /* Variables propias de la animación */
     .anim-wrapper {
       --anim-bg: #050505;
       --anim-text: #ffffff;
@@ -528,6 +528,7 @@
       display: block;
       width: 100%;
       height: 100%;
+      cursor: pointer;
     }
 
     /* Panel de controles (tema) */
@@ -563,7 +564,7 @@
       transform: scale(1.05);
     }
 
-    /* Botón "Entrar al Portafolio" */
+    /* Botón "Entrar al Portafolio" (opcional, se mantiene) */
     .anim-wrapper .enter-btn-container {
       position: absolute;
       bottom: 15%;
@@ -592,7 +593,26 @@
       box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
     }
 
-    /* Ajustes responsivos para el botón */
+    /* Texto indicativo "Haz clic en el ojo" */
+    .anim-wrapper .click-hint {
+      position: absolute;
+      bottom: 28%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: var(--anim-text);
+      font-size: 1.2rem;
+      font-weight: 500;
+      text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 24px;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: none; /* para que no interfiera con clics en el canvas */
+      white-space: nowrap;
+    }
+
     @media (max-width: 600px) {
       .anim-wrapper .enter-btn {
         padding: 14px 28px;
@@ -604,6 +624,12 @@
         padding: 8px 14px;
         font-size: 0.9rem;
       }
+      .anim-wrapper .click-hint {
+        font-size: 0.95rem;
+        padding: 6px 16px;
+        bottom: 30%;
+        white-space: normal;
+      }
     }
 
     /* ============================================================
@@ -611,7 +637,6 @@
        ============================================================ */
     #portfolio-content {
       display: none;
-      /* se muestra con JS */
       position: relative;
       z-index: 1;
       background: var(--bg-color);
@@ -640,7 +665,10 @@
       <button class="theme-btn" id="theme-toggle">Modo Claro</button>
     </div>
 
-    <!-- Botón para entrar al portafolio -->
+    <!-- Texto indicativo -->
+    <div class="click-hint">👁️ Haz clic en el ojo para entrar al portafolio</div>
+
+    <!-- Botón (opcional, se mantiene) -->
     <div class="enter-btn-container">
       <button class="enter-btn" id="enter-portfolio-btn">Entrar al Portafolio</button>
     </div>
@@ -969,7 +997,8 @@
       resize();
 
       // Cambiar tema (solo en la animación)
-      themeBtn.addEventListener('click', () => {
+      themeBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evita que el clic en el botón también dispare la entrada
         if (theme === 'dark') {
           theme = 'light';
           wrapper.setAttribute('data-theme', 'light');
@@ -1027,7 +1056,6 @@
       }
 
       function animate() {
-        // Fondo
         const bgColor = theme === 'dark' ? '#050505' : '#f4f4f9';
         ctx.fillStyle = bgColor;
         ctx.fillRect(0, 0, width, height);
@@ -1063,20 +1091,19 @@
 
 
     // ------------------------------------------------------------
-    // 2. MOSTRAR / OCULTAR AL HACER CLIC EN "ENTRAR"
+    // 2. MOSTRAR / OCULTAR AL HACER CLIC (en el ojo o en el botón)
     // ------------------------------------------------------------
     const enterBtn = document.getElementById('enter-portfolio-btn');
     const animWrapper = document.getElementById('animation-wrapper');
     const portfolioContent = document.getElementById('portfolio-content');
+    const canvasElem = document.getElementById('animCanvas');
 
-    // Función para inicializar las gráficas de Chart.js
     let chartsInitialized = false;
 
     function initCharts() {
       if (chartsInitialized) return;
       chartsInitialized = true;
 
-      // Gráfica 1: Rendimiento
       const ctxPerf = document.getElementById('performanceChart').getContext('2d');
       new Chart(ctxPerf, {
         type: 'bar',
@@ -1108,7 +1135,6 @@
         }
       });
 
-      // Gráfica 2: Stack
       const ctxStack = document.getElementById('stackChart').getContext('2d');
       new Chart(ctxStack, {
         type: 'doughnut',
@@ -1129,21 +1155,30 @@
       });
     }
 
-    enterBtn.addEventListener('click', function() {
-      // Ocultar la animación
+    function entrarAlPortafolio() {
       animWrapper.classList.add('hidden');
-
-      // Mostrar el portafolio
       portfolioContent.style.display = 'block';
-      // Pequeño retraso para asegurar que el display block se aplique antes de las gráficas
       setTimeout(() => {
         portfolioContent.classList.add('visible');
-        // Inicializar gráficas si no lo están
         initCharts();
       }, 100);
-
-      // Desplazar al inicio (por si acaso)
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Asignar evento al botón
+    enterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      entrarAlPortafolio();
+    });
+
+    // Asignar evento al canvas (clic en el ojo o en cualquier parte de la animación)
+    canvasElem.addEventListener('click', entrarAlPortafolio);
+    // También el wrapper por si el clic se da en el fondo (pero el canvas cubre todo)
+    animWrapper.addEventListener('click', (e) => {
+      // Evitar que se dispare dos veces si el clic fue en el canvas (ya lo manejamos)
+      // Pero como el canvas está encima, el evento del wrapper no se disparará si el clic es en el canvas.
+      // Sin embargo, si el clic es en el borde (por ejemplo, en el panel de controles), no queremos que entre.
+      // Dejamos solo el canvas.
     });
   </script>
 
